@@ -3,7 +3,7 @@
 Create a PowerPoint presentation from images in the images directory
 """
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 import os
 import glob
 
@@ -67,7 +67,7 @@ def create_pptx_from_images(output_filename='presentation.pptx', images_dir='ima
         
         # Format the title
         p = tf.paragraphs[0]
-        p.font.size = Inches(0.4)
+        p.font.size = Pt(28)
         p.font.bold = True
         
         # Calculate image position and size to fit on slide
@@ -79,15 +79,17 @@ def create_pptx_from_images(output_filename='presentation.pptx', images_dir='ima
         
         # Add the image
         try:
+            # First, add with max_width to get the natural aspect ratio
             pic = slide.shapes.add_picture(img_path, left, top, width=max_width)
             
-            # If image height exceeds max, scale it down
+            # If image height exceeds max, recalculate both dimensions
             if pic.height > max_height:
+                # Scale down to fit height constraint
                 aspect_ratio = pic.width / pic.height
                 pic.height = max_height
                 pic.width = int(max_height * aspect_ratio)
-                
-            # Center the image horizontally
+            
+            # Center the image horizontally on the slide
             pic.left = int((prs.slide_width - pic.width) / 2)
             
             print(f"Added slide for: {img_name}")

@@ -14,7 +14,7 @@ draw = ImageDraw.Draw(mit_image)
 try:
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 60)
     font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
-except:
+except (OSError, IOError):
     font = ImageFont.load_default()
     font_small = ImageFont.load_default()
 
